@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bot Yönetim Paneli</title>
+  <style>
+    :root {
+      --primary: #4f8cff;
+      --primary-dark: #2a3a5a;
+      --bg-light: #f7f9fb;
+      --bg-dark: #181c23;
+      --card-light: #fff;
+      --card-dark: #23232b;
+      --border: #e3e6ee;
+      --border-dark: #333646;
+      --text: #222;
+      --text-dark: #eaeaea;
+      --shadow: 0 4px 24px 0 rgba(80, 110, 180, 0.08);
+      --radius: 18px;
+    }
+    body {
+      font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+      background: var(--bg-light);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    .container, .panel {
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      padding: 0 16px;
+    }
+    .form-container, .bot-list {
+      background: var(--card-light);
+      padding: 28px 28px 22px 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 32px;
+      border: 1.5px solid var(--border);
+      transition: background 0.3s, color 0.3s, border 0.3s;
+    }
+    .dark-mode .form-container, .dark-mode .bot-list {
+      background: var(--card-dark);
+      color: var(--text-dark);
+      border: 1.5px solid var(--border-dark);
+      box-shadow: 0 4px 24px 0 rgba(30,40,80,0.18);
+    }
+    h1, h2 {
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+    .form-container input {
+      width: 100%;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      font-size: 1.08rem;
+      background: #f7f9fb;
+      color: var(--text);
+      transition: border 0.2s, background 0.2s;
+      outline: none;
+      box-shadow: 0 1px 4px #0001;
+    }
+    .dark-mode .form-container input {
+      background: #23232b;
+      color: #eaeaea;
+      border: 1.5px solid #333646;
+    }
+    .form-container button, .bot-item button {
+      width: 100%;
+      padding: 13px 0;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-size: 1.08rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #4f8cff22;
+      transition: background 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+    }
+    .form-container button:hover, .bot-item button:hover {
+      background: #2563eb;
+      box-shadow: 0 4px 16px #4f8cff33;
+    }
+    .bot-list {
+      padding-top: 18px;
+    }
+    .bot-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1.08rem;
+    }
+    .bot-item:last-child {
+      border-bottom: none;
+    }
+    .bot-item a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.08rem;
+      transition: color 0.2s;
+    }
+    .bot-item a:hover {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+    .bot-item form {
+      margin: 0;
+      width: 120px;
+    }
+    .bot-item button {
+      background: #ef4444;
+      color: #fff;
+      border-radius: 10px;
+      font-size: 1.01rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #ef444422;
+      margin-top: 0;
+      padding: 10px 0;
+      transition: background 0.2s;
+    }
+    .bot-item button:hover {
+      background: #b91c1c;
+    }
+    .logout-link {
+      display: block;
+      text-align: center;
+      margin-top: 24px;
+      color: #4f8cff;
+      text-decoration: none;
+      font-size: 1.08rem;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+    .dark-mode .logout-link {
+      color: #8ab4ff;
+    }
+    .theme-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 1.08rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #4f8cff22;
+      transition: background 0.2s;
+    }
+    .dark-mode .theme-toggle {
+      background: #23232b;
+      color: #eaeaea;
+    }
+    @media (max-width: 1000px) {
+      .container, .panel { max-width: 98vw; }
+    }
+  </style>
+</head>
+<body>
+ <button class="theme-toggle" onclick="toggleTheme()">🌗 Tema</button>
+  <div class="panel">
+    <h1>Minecraft Bot Yönetim Paneli</h1>
+
+    <div class="form-container">
+      <h2>Yeni Bot Oluştur</h2>
+      <form method="POST" action="/bot-olustur">
+        <input name="kullaniciAdi" placeholder="Kullanıcı Adı" required />
+        <input name="sunucuIP" placeholder="Sunucu IP (örn. mc.sunucu.com)" required />
+        <input name="port" placeholder="Port (örn. 25565)" required />
+        <input name="versiyon" placeholder="Minecraft Versiyon (örn. 1.20.4)" required />
+        <button type="submit">Bot Oluştur</button>
+      </form>
+    </div>
+
+    <div class="bot-list">
+      <h2>Botlarınız</h2>
+      <% if (botlar.length === 0) { %>
+        <p>Henüz bot oluşturulmadı.</p>
+      <% } else { %>
+        <% botlar.forEach(bot => { %>
+          <div class="bot-item">
+            <a href="/bot/<%= bot.id %>"><%= bot.kullaniciAdi %> — <%= bot.durum %></a>
+            <form method="POST" action="/bot/<%= bot.id %>/durdur">
+              <button type="submit">Durdur</button>
+            </form>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const isDark = body.classList.toggle('dark-mode');
+      body.classList.toggle('light-mode', !isDark);
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.body.classList.add(theme + '-mode');
+    });
+  </script>
+</body>
+</html>

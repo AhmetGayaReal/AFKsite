@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title><%= bot.kullaniciAdi %> - Bot Detayı</title>
+  <style>
+    :root {
+      --primary: #4f8cff;
+      --primary-dark: #2a3a5a;
+      --bg-light: #f7f9fb;
+      --bg-dark: #181c23;
+      --card-light: #fff;
+      --card-dark: #23232b;
+      --border: #e3e6ee;
+      --border-dark: #333646;
+      --text: #222;
+      --text-dark: #eaeaea;
+      --shadow: 0 4px 24px 0 rgba(80, 110, 180, 0.08);
+      --radius: 18px;
+    }
+    body {
+      font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+      background: var(--bg-light);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      padding: 0 16px;
+    }
+    .card {
+      background: var(--card-light);
+      padding: 28px 28px 22px 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 32px;
+      border: 1.5px solid var(--border);
+      transition: background 0.3s, color 0.3s, border 0.3s;
+    }
+    .dark-mode .card {
+      background: var(--card-dark);
+      color: var(--text-dark);
+      border: 1.5px solid var(--border-dark);
+      box-shadow: 0 4px 24px 0 rgba(30,40,80,0.18);
+    }
+    h1, h2 {
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+    }
+    .bot-info p {
+      margin: 10px 0 0 0;
+      font-size: 1.08rem;
+    }
+    .mesaj-listesi {
+      background: #f3f6fa;
+      padding: 14px;
+      border-radius: 12px;
+      max-height: 320px;
+      overflow-y: auto;
+      border: 1px solid #e3e6ee;
+    }
+    .dark-mode .mesaj-listesi {
+      background: #23232b;
+      border: 1px solid #333646;
+    }
+    .mesaj-listesi div {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(80,110,180,0.04);
+      font-size: 1.01rem;
+    }
+    .dark-mode .mesaj-listesi div {
+      background: #23232b;
+      color: #eaeaea;
+      box-shadow: 0 1px 4px rgba(30,40,80,0.10);
+    }
+    form {
+      margin-top: 18px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      font-size: 1.08rem;
+      background: #f7f9fb;
+      color: var(--text);
+      transition: border 0.2s, background 0.2s;
+      outline: none;
+      box-shadow: 0 1px 4px #0001;
+    }
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .dark-mode input[type="text"], .dark-mode textarea {
+      background: #23232b;
+      color: #eaeaea;
+      border: 1.5px solid #333646;
+    }
+    button {
+      padding: 13px 0;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-size: 1.08rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #4f8cff22;
+      transition: background 0.2s, box-shadow 0.2s;
+      width: 100%;
+      margin-top: 8px;
+    }
+    button:hover {
+      background: #2563eb;
+      box-shadow: 0 4px 16px #4f8cff33;
+    }
+    a.back-link {
+      display: block;
+      text-align: center;
+      margin-top: 24px;
+      color: #4f8cff;
+      text-decoration: none;
+      font-size: 1.08rem;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+    .dark-mode a.back-link {
+      color: #8ab4ff;
+    }
+    .theme-toggle {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 1.08rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #4f8cff22;
+      transition: background 0.2s;
+    }
+    .dark-mode .theme-toggle {
+      background: #23232b;
+      color: #eaeaea;
+    }
+    /* Yan Menü */
+    .menu-button {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      background: var(--primary-dark);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px #0002;
+      border: 1.5px solid #2a3a5a;
+      transition: background 0.2s;
+    }
+    .menu-button:hover {
+      background: #4f8cff;
+    }
+    .side-panel {
+      position: fixed;
+      top: 0;
+      right: -340px;
+      width: 340px;
+      height: 100%;
+      background: var(--card-light);
+      box-shadow: -4px 0 24px 0 rgba(80,110,180,0.10);
+      transition: right 0.3s cubic-bezier(.4,2,.6,1), background 0.3s;
+      padding: 0 0 0 0;
+      z-index: 999;
+      border-left: 1.5px solid var(--border);
+      overflow-y: auto;
+    }
+    .side-panel.open {
+      right: 0;
+    }
+    .dark-mode .side-panel {
+      background: var(--card-dark);
+      border-left: 1.5px solid var(--border-dark);
+      box-shadow: -4px 0 24px 0 rgba(30,40,80,0.18);
+    }
+    .side-panel h2 {
+      margin: 28px 0 10px 0;
+      text-align: left;
+      font-size: 1.18rem;
+      padding-left: 32px;
+      color: var(--primary-dark);
+      letter-spacing: 0.2px;
+    }
+    .dark-mode .side-panel h2 {
+      color: #8ab4ff;
+    }
+    .side-panel p {
+      margin: 0 0 12px 32px;
+      font-size: 1.01rem;
+      color: #888;
+    }
+    .side-panel button.toggle-btn, .side-panel button.toggle-btn2 {
+      margin-left: 32px;
+      margin-bottom: 18px;
+      width: calc(100% - 64px);
+      padding: 12px 0;
+      border-radius: 10px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      box-shadow: 0 2px 8px #4f8cff22;
+      transition: background 0.2s;
+    }
+    .side-panel button.toggle-btn:hover, .side-panel button.toggle-btn2:hover {
+      background: #2563eb;
+    }
+    .side-panel .toggle-on {
+      background: #22c55e !important;
+    }
+    .side-panel .toggle-off {
+      background: #ef4444 !important;
+    }
+    .side-panel textarea, .side-panel input[type="number"] {
+      margin-left: 32px;
+      margin-bottom: 10px;
+      width: calc(100% - 64px);
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1.5px solid #444;
+      font-size: 15px;
+      background: #f7f9fb;
+      color: #222;
+      box-shadow: 0 2px 8px #0001;
+      outline: none;
+      transition: border 0.2s, background 0.2s;
+    }
+    .dark-mode .side-panel textarea, .dark-mode .side-panel input[type="number"] {
+      background: #23232b;
+      color: #eaeaea;
+      border: 1.5px solid #333646;
+    }
+    @media (max-width: 1000px) {
+      .container { max-width: 98vw; }
+      .side-panel { width: 100vw; right: -100vw; }
+      .side-panel.open { right: 0; }
+    }
+    .dark-mode button:hover {
+      background: #2563eb;
+      box-shadow: 0 4px 16px #4f8cff33;
+    }
+    #refresh-chat-btn {
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card" style="position: relative;">
+      <h1><%= bot.kullaniciAdi %> - Bot Detayları</h1>
+      <div id="uptime-box" style="position: absolute; top: 24px; right: 32px; background: #4f8cff; color: #fff; padding: 8px 18px; border-radius: 10px; font-weight: 600; font-size: 1.01rem; z-index: 10; box-shadow: 0 2px 8px #4f8cff22;">
+        <span id="uptime-text">Uptime: --:--:--</span>
+      </div>
+      <div class="bot-info">
+        <p><strong>Durum:</strong> <%= bot.durum %></p>
+        <p><strong>Sunucu:</strong> <%= bot.sunucuIP %>:<%= bot.port %></p>
+        <p><strong>Versiyon:</strong> <%= bot.versiyon %></p>
+        <p><strong>Sağlık:</strong> <%= bot.saglik %> / 20</p>
+        <p><strong>Açlık:</strong> <%= bot.aclik %> / 20</p>
+        <p><strong>Konum:</strong> 
+          <% if (bot.konum) { %>
+            X: <%= bot.konum.x %>, Y: <%= bot.konum.y %>, Z: <%= bot.konum.z %>
+          <% } else { %>
+            Bilinmiyor
+          <% } %>
+        </p>
+        <p><strong>Dünya:</strong>
+          <% if (bot.dunya) { %>
+            <%= bot.dunya.dimension %> - <%= bot.dunya.difficulty %>
+          <% } else { %>
+            Bilinmiyor
+          <% } %>
+        </p>
+        <p><strong>Envanter:</strong></p>
+        <% if (bot.envanter && bot.envanter.length > 0) { %>
+          <ul>
+            <% bot.envanter.forEach(function(item) { %>
+              <li><%= item.name %> x<%= item.count %></li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <span>Envanter boş.</span>
+        <% } %>
+        <% if (bot.hata) { %>
+          <p style="color: red;"><strong>Hata:</strong> <%= bot.hata %></p>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Mesaj Gönder</h2>
+      <form method="POST" action="/bot/<%= bot.id %>/mesaj">
+        <input type="text" name="mesaj" placeholder="Gönderilecek mesajı yazın..." required />
+        <button type="submit">Gönder</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h2>Gelen Mesajlar</h2>
+        <button id="refresh-chat-btn" style="padding: 6px 16px; border-radius: 10px; border: none; background: #4f8cff; cursor: pointer; font-weight: 600;">Yenile</button>
+      </div>
+      <div class="mesaj-listesi">
+        <% if (mesajlar.length === 0) { %>
+          <div>Henüz mesaj alınmadı.</div>
+        <% } else { %>
+          <% mesajlar.forEach(function(mesaj) { %>
+            <div><%= mesaj %></div>
+          <% }); %>
+        <% } %>
+      </div>
+    </div>
+
+    <a href="/" class="back-link">← Geri Dön</a>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Uptime hesaplama ve gösterme
+    (function () {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+      }
+      // Uptime
+      var loginTimeStr = '<%= bot.loginTime ? bot.loginTime : "" %>';
+      var loginTime = loginTimeStr ? parseInt(loginTimeStr) : null;
+      var uptimeMsStr = '<%= (bot.uptime !== undefined && bot.uptime !== null) ? bot.uptime : 0 %>';
+      var uptimeMs = parseInt(uptimeMsStr) || 0;
+      function formatUptime(ms) {
+        if (!ms || ms < 0) return '--:--:--';
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(totalSeconds % 60).padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+      }
+      function updateUptime() {
+        var totalUptime = uptimeMs;
+        if (loginTime) {
+          totalUptime += Date.now() - loginTime;
+        }
+        document.getElementById('uptime-text').textContent = 'Uptime: ' + formatUptime(totalUptime);
+      }
+      updateUptime();
+      setInterval(updateUptime, 1000);
+
+      // Chat Refresh
+      const refreshChatBtn = document.getElementById('refresh-chat-btn');
+      const messageListDiv = document.querySelector('.mesaj-listesi');
+
+      refreshChatBtn.addEventListener('click', () => {
+          fetch(`/api/bot/<%= bot.id %>/messages`)
+              .then(response => response.json())
+              .then(data => {
+                  messageListDiv.innerHTML = ''; // Clear old messages
+                  if (data.mesajlar.length === 0) {
+                      messageListDiv.innerHTML = '<div>Henüz mesaj alınmadı.</div>';
+                  } else {
+                      data.mesajlar.forEach(mesaj => {
+                          const msgDiv = document.createElement('div');
+                          msgDiv.textContent = mesaj;
+                          messageListDiv.appendChild(msgDiv);
+                      });
+                  }
+              })
+              .catch(error => console.error('Sohbet yenilenirken hata oluştu:', error));
+      });
+    })();
+  </script>
+</body>
+</html>
+
+<button class="menu-button" onclick="togglePanel()">☰</button>
+
+<div class="side-panel" id="sidePanel">
+  <h2 style="padding-left:32px;">Bot Özellikleri</h2>
+  <h2 style="padding-left:32px;margin-top:24px;">Eşyaları Bırak</h2>
+  <p>Bot üzerindeki tüm eşyaları yere atar</p>
+  <button class="toggle-btn" onclick="dropAllItems()">Bırak</button>
+  <div>
+    <h2 style="padding-left:32px;margin-top:24px;">Anti-AFK</h2>
+    <p>Her 3 saniyede bir bot zıplar</p>
+    <button id="antiAfkToggle" class="toggle-btn">Yükleniyor...</button>
+  </div>
+  <div>
+    <h2 style="padding-left:32px;margin-top:24px;">Oto Kazma</h2>
+    <p>Bot baktığı bloğu otomatik olarak kazar. Bloğun türüne göre uygun eşyayı eline alır.</p>
+    <button id="autoMineToggle" class="toggle-btn">Yükleniyor...</button>
+  </div>
+  <div>
+    <h2 style="padding-left:32px;margin-top:24px;">Konuma Git</h2>
+    <p>Bot belirlediğiniz X, Y, Z koordinatına gider.</p>
+    <input id="gotoX" type="number" placeholder="X" style="width:calc(33% - 36px);margin-left:32px;margin-bottom:8px;padding:12px 14px;border-radius:10px;border:1.5px solid #444;font-size:15px;background:#f7f9fb;color:#222;box-shadow:0 2px 8px #0001;outline:none;transition:border 0.2s,background 0.2s;display:inline-block;" />
+    <input id="gotoY" type="number" placeholder="Y" style="width:calc(33% - 36px);margin-left:8px;margin-bottom:8px;padding:12px 14px;border-radius:10px;border:1.5px solid #444;font-size:15px;background:#f7f9fb;color:#222;box-shadow:0 2px 8px #0001;outline:none;transition:border 0.2s,background 0.2s;display:inline-block;" />
+    <input id="gotoZ" type="number" placeholder="Z" style="width:calc(33% - 36px);margin-left:8px;margin-bottom:8px;padding:12px 14px;border-radius:10px;border:1.5px solid #444;font-size:15px;background:#f7f9fb;color:#222;box-shadow:0 2px 8px #0001;outline:none;transition:border 0.2s,background 0.2s;display:inline-block;" />
+    <button id="gotoBtn" class="toggle-btn" style="margin-left:32px;width:calc(100% - 64px);padding:12px 0;font-size:15px;">Git</button>
+  </div>
+  <div>
+    <h2 style="padding-left:32px;margin-top:24px;">Oto Mesaj Gönderici</h2>
+    <p>Belirli aralıklarla rastgele mesaj gönderir</p>
+    <textarea id="autoMsgTextarea" rows="5" style="width:calc(100% - 64px);margin-left:32px;margin-bottom:8px;padding:12px 14px;border-radius:10px;border:1.5px solid #444;font-size:15px;background:#f7f9fb;color:#222;box-shadow:0 2px 8px #0001;outline:none;transition:border 0.2s,background 0.2s;" placeholder="Her satıra bir mesaj yazın..."></textarea>
+    <input id="autoMsgInterval" type="number" min="3" value="10" style="width:calc(100% - 64px);margin-left:32px;margin-bottom:8px;padding:12px 14px;border-radius:10px;border:1.5px solid #444;font-size:15px;background:#f7f9fb;color:#222;box-shadow:0 2px 8px #0001;outline:none;transition:border 0.2s,background 0.2s;" placeholder="Saniye aralığı" />
+    <button id="autoMsgToggle" class="toggle-btn2" style="margin-left:32px;width:calc(100% - 64px);padding:12px 0;font-size:15px;">Yükleniyor...</button>
+  </div>
+</div>
+
+<script>
+  const botId = "<%= bot.id %>";
+  const panel = document.getElementById("sidePanel");
+  const toggleBtn = document.getElementById("antiAfkToggle");
+  const localKey = "antiAfk_" + botId;
+  const autoMsgKey = "autoMsg_" + botId;
+  const autoMsgTextarea = document.getElementById("autoMsgTextarea");
+  const autoMsgInterval = document.getElementById("autoMsgInterval");
+  const autoMsgToggle = document.getElementById("autoMsgToggle");
+  const autoMineToggle = document.getElementById("autoMineToggle");
+  const autoMineKey = "autoMine_" + botId;
+  const gotoX = document.getElementById("gotoX");
+  const gotoY = document.getElementById("gotoY");
+  const gotoZ = document.getElementById("gotoZ");
+  const gotoBtn = document.getElementById("gotoBtn");
+
+  function togglePanel() {
+    panel.classList.toggle("open");
+  }
+
+  function updateButton(state) {
+    toggleBtn.textContent = state ? "Açık" : "Kapalı";
+    toggleBtn.className = "toggle-btn " + (state ? "toggle-on" : "toggle-off");
+  }
+
+  function setAntiAfkState(state) {
+    localStorage.setItem(localKey, JSON.stringify(state));
+    fetch("/api/anti-afk/" + botId, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ enabled: state })
+    });
+    updateButton(state);
+  }
+
+  toggleBtn.onclick = () => {
+    const current = JSON.parse(localStorage.getItem(localKey) || "false");
+    setAntiAfkState(!current);
+  };
+
+  // Sayfa yüklendiğinde mevcut durumu kontrol et
+  window.addEventListener("DOMContentLoaded", () => {
+    const state = JSON.parse(localStorage.getItem(localKey) || "false");
+    updateButton(state);
+  });
+  
+function dropAllItems() {
+  fetch("/api/drop-items/" + botId, {
+    method: "POST"
+  }).then(response => {
+    if (!response.ok) {
+      alert("Eşya bırakma işlemi başarısız oldu");
+    }
+  });
+}
+  
+function updateAutoMsgButton(state) {
+  autoMsgToggle.textContent = state ? "Durdur" : "Başlat";
+  autoMsgToggle.className = "toggle-btn2 " + (state ? "toggle-on" : "toggle-off");
+}
+
+function setAutoMsgState(state, messages, interval) {
+  localStorage.setItem(autoMsgKey, JSON.stringify({ enabled: state, messages, interval }));
+  fetch("/api/auto-message/" + botId, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ enabled: state, messages, interval })
+  });
+  updateAutoMsgButton(state);
+}
+
+autoMsgToggle.onclick = () => {
+  const current = JSON.parse(localStorage.getItem(autoMsgKey) || "{}") || {};
+  const enabled = !!current.enabled;
+  const messages = (autoMsgTextarea.value || "").split("\n").map(x => x.trim()).filter(Boolean);
+  const interval = parseInt(autoMsgInterval.value) || 10;
+  if (!enabled && messages.length === 0) {
+    alert("En az bir mesaj girin.");
+    return;
+  }
+  setAutoMsgState(!enabled, messages, interval);
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  fetch("/api/auto-message/" + botId)
+    .then(r => r.json())
+    .then(cfg => {
+      autoMsgTextarea.value = (cfg.messages || []).join("\n");
+      autoMsgInterval.value = cfg.interval || 10;
+      updateAutoMsgButton(cfg.enabled);
+      localStorage.setItem(autoMsgKey, JSON.stringify(cfg));
+    });
+});
+
+function updateAutoMineButton(state) {
+  autoMineToggle.textContent = state ? "Açık" : "Kapalı";
+  autoMineToggle.className = "toggle-btn " + (state ? "toggle-on" : "toggle-off");
+}
+
+function setAutoMineState(state) {
+  localStorage.setItem(autoMineKey, JSON.stringify(state));
+  fetch("/api/auto-mine/" + botId, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ enabled: state })
+  });
+  updateAutoMineButton(state);
+}
+
+autoMineToggle.onclick = () => {
+  const current = JSON.parse(localStorage.getItem(autoMineKey) || "false");
+  setAutoMineState(!current);
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  const state = JSON.parse(localStorage.getItem(autoMineKey) || "false");
+  updateAutoMineButton(state);
+});
+
+gotoBtn.onclick = () => {
+  const x = parseInt(gotoX.value) || 0;
+  const y = parseInt(gotoY.value) || 0;
+  const z = parseInt(gotoZ.value) || 0;
+  fetch("/api/goto/" + botId, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ x, y, z })
+  }).then(response => {
+    if (!response.ok) {
+      alert("Konuma gitme işlemi başarısız oldu");
+    }
+  });
+};
+</script>
